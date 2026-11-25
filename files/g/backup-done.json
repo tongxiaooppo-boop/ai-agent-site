@@ -1,0 +1,70 @@
+{
+  "name": "G 備份行程表",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "手動執行",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "/home/node/.n8n-files/agent/schedule.xlsx",
+        "options": {}
+      },
+      "name": "讀行程表",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/home/node/.n8n-files/agent/schedule-backup.xlsx",
+        "options": {}
+      },
+      "name": "寫備份",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "手動執行": {
+      "main": [
+        [
+          {
+            "node": "讀行程表",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀行程表": {
+      "main": [
+        [
+          {
+            "node": "寫備份",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

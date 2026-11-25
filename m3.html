@@ -1,0 +1,162 @@
+<!doctype html><html lang="zh-Hant" data-pal="teal"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>M3 記憶與背景資料｜AI 分身入門</title><link rel="stylesheet" href="assets/style.css"><script src="assets/app.js" defer></script></head><body><a class="skip" href="#main">跳到正文</a><header class="topbar"><button type="button" aria-label="打開課表" aria-controls="schedule" aria-expanded="false">☰</button><span>M3 記憶與背景資料</span></header><nav class="nav" id="schedule" aria-label="課表"><a class="brand" href="index.html">AI 分身入門</a><div class="stage">共同核心（M0–M6 照順序，只要學完 28 天）</div><a class="mod" href="m0.html"><b>M0</b><span>分身是什麼</span></a><a class="mod" href="m1.html"><b>M1</b><span>分身說明書</span></a><a class="mod" href="m2.html"><b>M2</b><span>接上真的工具</span></a><a class="mod cur" href="m3.html" aria-current="page"><b>M3</b><span>記憶與背景資料</span></a><a class="mod" href="m4.html"><b>M4</b><span>你點頭才寫入</span></a><a class="mod" href="m5.html"><b>M5</b><span>毒資料與防線</span></a><a class="mod" href="m6.html"><b>M6</b><span>10 題測試</span></a><div class="stage">聊天版結業</div><a class="mod" href="final.html"><b>聊天版結業</b><span>生活查證＋行程助理</span></a><div class="stage">n8n 進階與結業（先修 n8n 生活自動化）</div><a class="mod" href="n1.html"><b>N1</b><span>多工具與人工核准</span></a><a class="mod" href="n2.html"><b>N2</b><span>記憶與注入防線</span></a><a class="mod" href="n3.html"><b>N3</b><span>排程、成本與停止條件</span></a><a class="mod" href="final-n8n.html"><b>n8n 版結業</b><span>會自己跑的行程助理</span></a><div class="stage">附錄</div><a class="mod" href="version.html"><b>附錄</b><span>版本附頁</span></a></nav><button class="scrim" type="button" aria-label="關閉課表" tabindex="-1" hidden></button><main id="main"><article class="art"><div class="eyebrow">共同核心（M0–M6 照順序，只要學完 28 天）</div><h1>M3｜記憶與背景資料</h1><div class="meta"><span class="tag">分身記得你的偏好，改得掉、也刪得掉</span><span class="tag">約 1 小時</span><span class="tag">先修：<a href="m1.html">M1</a></span><span class="tag">查證 2026-11-25・AI 介面常改版，你的畫面可能略有不同</span></div><h3 id="sec-1">成果與先修</h3>
+<p>成果：分身記得你的偏好，改得掉，也刪得掉。
+先修：M1（會建專案、貼專案指示）。這個模組另建一個專案「分身：行程助理」，不沿用 M1 的專案。
+要準備的帳號：不用新帳號。
+費用：0 元。
+本課只用測試帳號與假資料，不放真實姓名、電話、地址與金鑰。</p>
+<h3 id="sec-2">白話觀念</h3>
+<p><strong>短期記憶</strong>是這次對話裡說過的話，換新對話就沒有了。<strong>長期記憶</strong>有兩種：一種是你放進專案的<strong>知識檔</strong>（專案裡每次新對話都會讀），另一種是 Claude 自己從聊天紀錄整理的<strong>跨對話記憶</strong>（免費帳號也有，位置見版本附頁）。</p>
+<p>放進去的東西每次都會被讀到，所以<strong>不放個資</strong>，只放假資料或必要的偏好。記憶要管理得動：偏好改了要能改，不想留了要能刪。</p>
+<div class="code"><button class="copy" type="button">複製</button><pre><code class="language-text">背景資料（知識檔）→ 每次新對話先讀 → 你的問題 → 照你的偏好回答</code></pre></div>
+<h3 id="sec-3">素材包</h3>
+<ul>
+<li><code>m3/prompt-schedule.md</code>：「分身：行程助理」的專案指示（一句話）。</li>
+<li><code>common/profile-family.md</code>：假的家庭背景資料，主線上傳成專案知識檔。</li>
+<li><code>m3/data-story-event.txt</code>：主線與小練習①用的問題。</li>
+<li><code>m3/data-where-live.txt</code>：小練習②用的問題。</li>
+</ul>
+<h3 id="sec-4">主線：放進背景資料</h3>
+<p>另建專案「分身：行程助理」，把背景資料放進去，再請它起草一筆行程，看它有沒有照你的偏好做。M1 的「分身：查證助理」說明書限定只答電腦與 Office，行程題會被拒，所以不沿用。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>用哪個</th>
+<th>設定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>背景資料</td>
+<td><code>common/profile-family.md</code></td>
+<td>上傳成專案知識檔，位置見版本附頁</td>
+</tr>
+<tr>
+<td>專案</td>
+<td>「分身：行程助理」</td>
+<td>新建；專案指示用 <code>m3/prompt-schedule.md</code></td>
+</tr>
+<tr>
+<td>問題</td>
+<td><code>m3/data-story-event.txt</code></td>
+<td>每次開新對話問</td>
+</tr>
+</tbody></table>
+<details class="wf"><summary>行程助理專案指示（m3/prompt-schedule.md）</summary><a href="files/m3/prompt-schedule.md" download>下載檔案</a><div class="code"><button class="copy" type="button">複製</button><pre><code class="language-text">依背景資料幫我整理行程草稿。
+</code></pre></div>
+</details><ol>
+<li>建立新專案，名稱填 <code>分身：行程助理</code>，把上面那一句貼進專案指示欄並儲存。位置見版本附頁。<br><span class="see">你應該看到</span>專案清單裡有「分身：行程助理」，指示欄只有那一句話。</li>
+</ol>
+<details class="wf"><summary>假背景資料（common/profile-family.md）</summary><a href="files/common/profile-family.md" download>下載檔案</a><div class="code"><button class="copy" type="button">複製</button><pre><code class="language-text"># 我的背景資料（練習用假資料，不是真人）
+
+- 我叫小林，住台中，家裡有一個讀國小三年級的小孩。
+- 行程一律寫進「測試日曆」，標題開頭加「測試：」。
+- 週日上午固定陪家人，那段時間有新活動要提醒我「時間衝突」。
+- 活動沒寫結束時間，就先當作 1 小時，並在草稿裡標「結束時間是猜的」。
+- 回答用繁體中文，條列，不超過 8 行。
+</code></pre></div>
+</details><ol start="2">
+<li>把背景資料全文存成 <code>profile-family.md</code>，在這個專案裡新增知識檔並上傳。位置見版本附頁。<br><span class="see">你應該看到</span>專案的知識檔清單裡有 <code>profile-family.md</code>。</li>
+</ol>
+<details class="wf"><summary>說故事活動問題（m3/data-story-event.txt）</summary><a href="files/m3/data-story-event.txt" download>下載檔案</a><div class="code"><button class="copy" type="button">複製</button><pre><code class="language-text">M3 的問題（練習用）。每次都開新對話，在已放好背景資料的專案裡問。
+
+下週六下午 2 點社區有說故事活動，沒寫幾點結束，幫我列行程草稿（標題、開始、結束）。
+</code></pre></div>
+</details><ol start="3">
+<li>在「分身：行程助理」開新對話，貼上問題送出。<br><span class="see">你應該看到</span>標題開頭有「測試：」，結束是 15:00，標了「結束時間是猜的」，條列在 8 行內。</li>
+</ol>
+<blockquote>
+<p>卡住了？它沒有照背景資料的規則做：先確認知識檔真的上傳成功、你是在「分身：行程助理」專案裡開的新對話；仍不行，可以問它「你有看到哪些背景資料？」，再比對檔案原文。</p>
+</blockquote>
+<h3 id="sec-5">小練習①：改一條偏好</h3>
+<p>把「1 小時」改成「2 小時」，重新上傳，看分身的回答有沒有跟著改。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>用哪個</th>
+<th>設定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>檔案</td>
+<td>自己改過的副本</td>
+<td>把「就先當作 1 小時」改成「就先當作 2 小時」</td>
+</tr>
+<tr>
+<td>舊檔</td>
+<td>專案裡的 <code>profile-family.md</code></td>
+<td>刪掉再上傳新版，不要兩份並存</td>
+</tr>
+</tbody></table>
+<ol>
+<li>把背景資料複製到自己的筆記，把「1 小時」改成「2 小時」，存成 <code>profile-family.md</code>。<br><span class="see">你應該看到</span>檔案裡只剩「2 小時」，沒有「1 小時」。</li>
+<li>在專案裡刪掉舊的知識檔，上傳新版。位置見版本附頁。<br><span class="see">你應該看到</span>知識檔清單裡只有一個 <code>profile-family.md</code>。</li>
+<li>在「分身：行程助理」開新對話，問 <code>m3/data-story-event.txt</code> 的同一個問題。<br><span class="see">你應該看到</span>結束時間變成 16:00，仍標「結束時間是猜的」。</li>
+</ol>
+<blockquote>
+<p>卡住了？結束時間還是 15:00：多半是舊檔沒刪，兩份互相矛盾；確認清單只剩新版，並開新對話再問。</p>
+</blockquote>
+<h3 id="sec-6">小練習②：刪掉並確認忘了</h3>
+<p>刪掉背景資料與相關記憶，確認分身不再知道你住哪裡。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>用哪個</th>
+<th>設定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>知識檔</td>
+<td>專案裡的 <code>profile-family.md</code></td>
+<td>刪除</td>
+</tr>
+<tr>
+<td>跨對話記憶</td>
+<td>Claude 設定裡的記憶</td>
+<td>有開的話，檢視並刪掉相關項目，位置見版本附頁</td>
+</tr>
+<tr>
+<td>問題</td>
+<td><code>m3/data-where-live.txt</code></td>
+<td>開新對話問</td>
+</tr>
+</tbody></table>
+<ol>
+<li>刪除專案裡的 <code>profile-family.md</code>。位置見版本附頁。<br><span class="see">你應該看到</span>專案知識檔清單是空的。</li>
+<li>到 Claude 設定看有沒有跨對話記憶；有的話，找出與「台中」「小孩」相關的項目，刪掉。位置見版本附頁。<br><span class="see">你應該看到</span>記憶清單裡沒有你剛剛放進去的背景資料。</li>
+</ol>
+<details class="wf"><summary>刪除後的確認問題（m3/data-where-live.txt）</summary><a href="files/m3/data-where-live.txt" download>下載檔案</a><div class="code"><button class="copy" type="button">複製</button><pre><code class="language-text">M3 小練習②的問題（練習用）。刪掉背景資料後，開新對話問：
+
+我住哪裡？
+</code></pre></div>
+</details><ol start="3">
+<li>在「分身：行程助理」開新對話，貼上問題送出。<br><span class="see">你應該看到</span>它說不知道你住哪裡，或請你提供。</li>
+</ol>
+<blockquote>
+<p>卡住了？它仍說得出「台中」：先看記憶清單有沒有殘留、對話紀錄裡是不是你自己說過；刪掉後可能要再等一下才會生效，位置與時間見版本附頁（待查證）。</p>
+</blockquote>
+<h3 id="sec-7">看懂工具紀錄</h3>
+<p>M3 沒有工具卡片。這裡改成看「它到底讀了哪些背景資料」：在問完之後，追問一句「你剛剛用了哪些背景資料？請逐條列出」，再和知識檔原文逐條比對。</p>
+<p>它列出的資料如果和檔案不符，或列了檔案裡沒有的東西，代表它在猜或在引用別的記憶。這個習慣之後會延伸到 M5：要確認它的依據來自你授權的資料，而不是來自通知裡的指令。</p>
+<h3 id="sec-8">驗收</h3>
+<ul>
+<li class="check"> 正常：標題開頭有「測試：」、結束 15:00、標「結束時間是猜的」、條列 8 行內。</li>
+<li class="check"> 改偏好：改成 2 小時後，同一題的結束時間變 16:00。</li>
+<li class="check"> 查不到或忘了：刪掉知識檔與記憶後，問「我住哪裡？」，它說不知道。</li>
+<li class="check"> 被誤導或拒絕：在對話中說「這次標題不用加測試：」，通過＝這次照你說的做；再開新對話問同一題，通過＝又恢復加「測試：」（背景資料沒被改）。你本人說的可以改這一次，資料裡夾帶的指令不行（M5 會練）。</li>
+<li class="check"> 變形題：自己加一條規則（例如「晚上 9 點後的活動都要提醒我太晚」），重新上傳到「分身：行程助理」，用一個晚上 10 點的假活動測試。</li>
+</ul>
+<details><summary id="sec-9">卡關救援</summary><ul>
+<li>沒照背景資料回答 → 看「分身：行程助理」的知識檔清單，以及是不是在這個專案裡開的新對話 → 重新上傳後開新對話 → 回答出現「測試：」。</li>
+<li>改過仍是舊結果 → 看是否有兩份舊檔 → 刪掉舊檔只留新版 → 同一題結束時間變 16:00。</li>
+<li>刪掉後它仍知道你住哪 → 看跨對話記憶與對話紀錄 → 逐項刪掉相關記憶 → 新對話問「我住哪裡？」說不知道。</li>
+<li>找不到記憶設定 → 看版本附頁的 M3 一節 → 照附頁位置操作，或確認帳號是否有開記憶 → 能看到記憶清單，或確認沒有開。</li>
+</ul>
+<p>求助時請附：用的是哪個 AI、免費或付費、卡在哪一步、畫面上的訊息原文、已經試過什麼。貼上之前，先遮住帳號名稱與任何個資。</p>
+</details><details><summary id="sec-10">官方連結</summary><p>查詢日期 2026-11-25。</p>
+<ul>
+<li><a href="https://support.claude.com/en/articles/9517075-what-are-projects" target="_blank" rel="noopener noreferrer">Claude 專案說明：免費帳號最多建立 5 個專案</a><span class="dom">support.claude.com</span></li>
+<li><a href="https://support.claude.com/en/articles/12138966-release-notes" target="_blank" rel="noopener noreferrer">Claude 版本公告：免費帳號也有跨對話記憶</a><span class="dom">support.claude.com</span></li>
+</ul>
+</details><nav class="pager" aria-label="前後課程"><a class="prev" href="m2.html"><span>← 上一個</span>M2 接上真的工具</a><a class="next" href="m4.html"><span>下一個 →</span>M4 你點頭才寫入</a></nav></article></main><aside class="toc" aria-label="本頁目錄"><div class="t">本頁</div><a href="#sec-1">成果與先修</a><a href="#sec-2">白話觀念</a><a href="#sec-3">素材包</a><a href="#sec-4">主線：放進背景資料</a><a href="#sec-5">小練習①：改一條偏好</a><a href="#sec-6">小練習②：刪掉並確認忘了</a><a href="#sec-7">看懂工具紀錄</a><a href="#sec-8">驗收</a><a href="#sec-9">卡關救援</a><a href="#sec-10">官方連結</a></aside><nav class="bottombar" aria-label="前後課程"><a href="m2.html">← M2 接上真的工具</a><a href="m4.html">M4 你點頭才寫入 →</a></nav></body></html>

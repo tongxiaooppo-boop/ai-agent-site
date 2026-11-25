@@ -1,0 +1,280 @@
+<!doctype html><html lang="zh-Hant" data-pal="teal"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>n8n 版結業 會自己跑的行程助理｜AI 分身入門</title><link rel="stylesheet" href="assets/style.css"><script src="assets/app.js" defer></script></head><body><a class="skip" href="#main">跳到正文</a><header class="topbar"><button type="button" aria-label="打開課表" aria-controls="schedule" aria-expanded="false">☰</button><span>n8n 版結業 會自己跑的行程助理</span></header><nav class="nav" id="schedule" aria-label="課表"><a class="brand" href="index.html">AI 分身入門</a><div class="stage">共同核心（M0–M6 照順序，只要學完 28 天）</div><a class="mod" href="m0.html"><b>M0</b><span>分身是什麼</span></a><a class="mod" href="m1.html"><b>M1</b><span>分身說明書</span></a><a class="mod" href="m2.html"><b>M2</b><span>接上真的工具</span></a><a class="mod" href="m3.html"><b>M3</b><span>記憶與背景資料</span></a><a class="mod" href="m4.html"><b>M4</b><span>你點頭才寫入</span></a><a class="mod" href="m5.html"><b>M5</b><span>毒資料與防線</span></a><a class="mod" href="m6.html"><b>M6</b><span>10 題測試</span></a><div class="stage">聊天版結業</div><a class="mod" href="final.html"><b>聊天版結業</b><span>生活查證＋行程助理</span></a><div class="stage">n8n 進階與結業（先修 n8n 生活自動化）</div><a class="mod" href="n1.html"><b>N1</b><span>多工具與人工核准</span></a><a class="mod" href="n2.html"><b>N2</b><span>記憶與注入防線</span></a><a class="mod" href="n3.html"><b>N3</b><span>排程、成本與停止條件</span></a><a class="mod cur" href="final-n8n.html" aria-current="page"><b>n8n 版結業</b><span>會自己跑的行程助理</span></a><div class="stage">附錄</div><a class="mod" href="version.html"><b>附錄</b><span>版本附頁</span></a></nav><button class="scrim" type="button" aria-label="關閉課表" tabindex="-1" hidden></button><main id="main"><article class="art"><div class="eyebrow">n8n 進階與結業（先修 n8n 生活自動化）</div><h1>n8n 版結業｜會自己跑的行程助理</h1><div class="meta"><span class="tag">n8n 版分身通過五項畢業標準，並能重送不重複、出錯能復原</span><span class="tag">約 4–6 小時</span><span class="tag">先修：<a href="n3.html">N3</a></span><span class="tag">查證 2026-11-25・AI 介面常改版，你的畫面可能略有不同</span></div><h3 id="sec-1">成果與先修</h3>
+<p>成果：你在 n8n 做出一個「會自己跑的行程助理」：每天整理通知、只讀不寫、你在 Telegram 核准才寫進行程表，並用 10 題測試驗收；另外證明它重送不重複、出錯能復原。
+先修：N3（主線、停止條件、10 題記分表都做過）。
+要準備的帳號：同 N1，不用新帳號。費用 0 元。
+只用測試帳號與假資料：截圖與流程 JSON 交出去之前，先遮住帳號名稱、金鑰、Bot token 與 chat id。</p>
+<h3 id="sec-2">畢業標準</h3>
+<p>畢業要通過下列五項（照 <code>DECISION-v2.md</code> 第 2 節）：</p>
+<ol>
+<li>接上一個真的工具。</li>
+<li>看懂工具紀錄。</li>
+<li>限制權限。</li>
+<li>完成一次經人確認的外部寫入。</li>
+<li>跑完共用 10 題測試：通過率至少 90%，安全錯誤零次；高風險題重跑 3 次。</li>
+</ol>
+<p>n8n 版對照：第 1 項是 Agent 掛的 read_notice、read_schedule、read_profile 與 learn；第 2 項是 <code>intermediateSteps</code>；第 3 項是權限盤點表；第 4 項是 Telegram 核准後寫進行程表；第 5 項是 N3 小練習② 加 N1 主線補跑的記分表。</p>
+<h3 id="sec-3">n8n 版加測（兩項，不算在五項裡）</h3>
+<p>這兩項是 n8n 版才有的，通過與否不影響上面五項，但交付清單要附證明：</p>
+<ol>
+<li><strong>重送不重複</strong>：同一份通知送兩次、都按「核准」，行程表只有 1 筆新的；做法見 N1 小練習②。</li>
+<li><strong>出錯能復原</strong>：先備份行程表，故意弄壞，再還原，打開 Excel 確認資料回來了；做法見下一節。</li>
+</ol>
+<h3 id="sec-4">做法：備份與還原</h3>
+<p>兩個小流程，各 3 個節點，都不用 Agent、不用模型額度。</p>
+<table>
+<thead>
+<tr>
+<th>節點</th>
+<th>用途</th>
+<th>關鍵設定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手動執行（<strong>Manual Trigger</strong>）</td>
+<td>手動啟動</td>
+<td>不用設定</td>
+</tr>
+<tr>
+<td>讀行程表／讀備份（<strong>Read/Write Files from Disk</strong>）</td>
+<td>讀檔</td>
+<td>備份流程讀 <code>agent/schedule.xlsx</code>；還原流程讀 <code>agent/schedule-backup.xlsx</code></td>
+</tr>
+<tr>
+<td>寫備份／寫回行程表（<strong>Read/Write Files from Disk</strong>）</td>
+<td>寫檔</td>
+<td>備份流程寫 <code>agent/schedule-backup.xlsx</code>；還原流程寫回 <code>agent/schedule.xlsx</code></td>
+</tr>
+</tbody></table>
+<ol>
+<li>匯入 <code>backup-done.json</code>、<code>restore-done.json</code>；用 npx 的人，要把 <code>/home/node/.n8n-files</code> 換成 <code>C:/Users/&lt;你&gt;/.n8n-files</code>，每個流程各改兩個節點。位置見版本附頁。<br><span class="see">你應該看到</span>兩個流程各 3 個節點，路徑都指到你自己的資料夾。</li>
+<li>先確認行程表有資料（N1、N2 做過的話有 2 筆以上）。執行 <code>backup-done.json</code>。<br><span class="see">你應該看到</span><code>agent</code> 資料夾多了 <code>schedule-backup.xlsx</code>，打開和行程表內容一樣。</li>
+<li>故意弄壞：把 <code>schedule.xlsx</code> 其中一列刪掉，或把整個檔改名移走。<br><span class="see">你應該看到</span>行程表少了一列，或 <code>agent</code> 裡找不到 <code>schedule.xlsx</code>。</li>
+<li>執行 <code>restore-done.json</code>。<br><span class="see">你應該看到</span><code>agent</code> 裡又有 <code>schedule.xlsx</code>，打開後資料和備份時一樣，被刪的那列回來了。</li>
+</ol>
+<blockquote>
+<p>卡住了？還原完行程表是空的：看備份檔是不是在弄壞之後才做的；備份要在壞之前做，所以每次大改動前先備份。</p>
+</blockquote>
+<figure class="flow"><div class="flow-scroll"><svg class="flow-svg" viewBox="0 0 450 76" width="450" height="76" role="img" aria-label="流程圖：手動執行、讀行程表、寫備份"><defs><marker id="ah10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs><path class="e" d="M122 38 C139 38 139 38 152 38" marker-end="url(#ah10)"/><path class="e" d="M281 38 C298 38 298 38 311 38" marker-end="url(#ah10)"/><g class="n trigger"><rect x="10" y="10" width="112" height="56" rx="12"/><text class="nm" x="66" y="34">手動執行</text><text class="ty" x="66" y="52">Manual Trigger</text></g><g class="n data"><rect x="156" y="10" width="125" height="56" rx="12"/><text class="nm" x="218.5" y="34">讀行程表</text><text class="ty" x="218.5" y="52">Read/Write Files</text></g><g class="n data"><rect x="315" y="10" width="125" height="56" rx="12"/><text class="nm" x="377.5" y="34">寫備份</text><text class="ty" x="377.5" y="52">Read/Write Files</text></g></svg></div><figcaption>備份流程完成版的流程圖（照素材自動畫出）</figcaption></figure><details class="wf"><summary>備份流程完成版（g/backup-done.json）</summary><a href="files/g/backup-done.json" download>下載 .json（用 n8n 的 Import from File 匯入）</a><div class="code"><button class="copy" type="button">複製</button><pre><code class="language-json">{
+  &quot;name&quot;: &quot;G 備份行程表&quot;,
+  &quot;nodes&quot;: [
+    {
+      &quot;parameters&quot;: {},
+      &quot;name&quot;: &quot;手動執行&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.manualTrigger&quot;,
+      &quot;typeVersion&quot;: 1,
+      &quot;position&quot;: [
+        0,
+        0
+      ]
+    },
+    {
+      &quot;parameters&quot;: {
+        &quot;operation&quot;: &quot;read&quot;,
+        &quot;fileSelector&quot;: &quot;/home/node/.n8n-files/agent/schedule.xlsx&quot;,
+        &quot;options&quot;: {}
+      },
+      &quot;name&quot;: &quot;讀行程表&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.readWriteFile&quot;,
+      &quot;typeVersion&quot;: 1,
+      &quot;position&quot;: [
+        220,
+        0
+      ]
+    },
+    {
+      &quot;parameters&quot;: {
+        &quot;operation&quot;: &quot;write&quot;,
+        &quot;fileName&quot;: &quot;/home/node/.n8n-files/agent/schedule-backup.xlsx&quot;,
+        &quot;options&quot;: {}
+      },
+      &quot;name&quot;: &quot;寫備份&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.readWriteFile&quot;,
+      &quot;typeVersion&quot;: 1,
+      &quot;position&quot;: [
+        440,
+        0
+      ]
+    }
+  ],
+  &quot;connections&quot;: {
+    &quot;手動執行&quot;: {
+      &quot;main&quot;: [
+        [
+          {
+            &quot;node&quot;: &quot;讀行程表&quot;,
+            &quot;type&quot;: &quot;main&quot;,
+            &quot;index&quot;: 0
+          }
+        ]
+      ]
+    },
+    &quot;讀行程表&quot;: {
+      &quot;main&quot;: [
+        [
+          {
+            &quot;node&quot;: &quot;寫備份&quot;,
+            &quot;type&quot;: &quot;main&quot;,
+            &quot;index&quot;: 0
+          }
+        ]
+      ]
+    }
+  },
+  &quot;settings&quot;: {
+    &quot;executionOrder&quot;: &quot;v1&quot;
+  }
+}</code></pre></div>
+</details><figure class="flow"><div class="flow-scroll"><svg class="flow-svg" viewBox="0 0 450 76" width="450" height="76" role="img" aria-label="流程圖：手動執行、讀備份、寫回行程表"><defs><marker id="ah11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs><path class="e" d="M122 38 C139 38 139 38 152 38" marker-end="url(#ah11)"/><path class="e" d="M281 38 C298 38 298 38 311 38" marker-end="url(#ah11)"/><g class="n trigger"><rect x="10" y="10" width="112" height="56" rx="12"/><text class="nm" x="66" y="34">手動執行</text><text class="ty" x="66" y="52">Manual Trigger</text></g><g class="n data"><rect x="156" y="10" width="125" height="56" rx="12"/><text class="nm" x="218.5" y="34">讀備份</text><text class="ty" x="218.5" y="52">Read/Write Files</text></g><g class="n data"><rect x="315" y="10" width="125" height="56" rx="12"/><text class="nm" x="377.5" y="34">寫回行程表</text><text class="ty" x="377.5" y="52">Read/Write Files</text></g></svg></div><figcaption>還原流程完成版的流程圖（照素材自動畫出）</figcaption></figure><details class="wf"><summary>還原流程完成版（g/restore-done.json）</summary><a href="files/g/restore-done.json" download>下載 .json（用 n8n 的 Import from File 匯入）</a><div class="code"><button class="copy" type="button">複製</button><pre><code class="language-json">{
+  &quot;name&quot;: &quot;G 從備份還原行程表&quot;,
+  &quot;nodes&quot;: [
+    {
+      &quot;parameters&quot;: {},
+      &quot;name&quot;: &quot;手動執行&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.manualTrigger&quot;,
+      &quot;typeVersion&quot;: 1,
+      &quot;position&quot;: [
+        0,
+        0
+      ]
+    },
+    {
+      &quot;parameters&quot;: {
+        &quot;operation&quot;: &quot;read&quot;,
+        &quot;fileSelector&quot;: &quot;/home/node/.n8n-files/agent/schedule-backup.xlsx&quot;,
+        &quot;options&quot;: {}
+      },
+      &quot;name&quot;: &quot;讀備份&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.readWriteFile&quot;,
+      &quot;typeVersion&quot;: 1,
+      &quot;position&quot;: [
+        220,
+        0
+      ]
+    },
+    {
+      &quot;parameters&quot;: {
+        &quot;operation&quot;: &quot;write&quot;,
+        &quot;fileName&quot;: &quot;/home/node/.n8n-files/agent/schedule.xlsx&quot;,
+        &quot;options&quot;: {}
+      },
+      &quot;name&quot;: &quot;寫回行程表&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.readWriteFile&quot;,
+      &quot;typeVersion&quot;: 1,
+      &quot;position&quot;: [
+        440,
+        0
+      ]
+    }
+  ],
+  &quot;connections&quot;: {
+    &quot;手動執行&quot;: {
+      &quot;main&quot;: [
+        [
+          {
+            &quot;node&quot;: &quot;讀備份&quot;,
+            &quot;type&quot;: &quot;main&quot;,
+            &quot;index&quot;: 0
+          }
+        ]
+      ]
+    },
+    &quot;讀備份&quot;: {
+      &quot;main&quot;: [
+        [
+          {
+            &quot;node&quot;: &quot;寫回行程表&quot;,
+            &quot;type&quot;: &quot;main&quot;,
+            &quot;index&quot;: 0
+          }
+        ]
+      ]
+    }
+  },
+  &quot;settings&quot;: {
+    &quot;executionOrder&quot;: &quot;v1&quot;
+  }
+}</code></pre></div>
+</details><h3 id="sec-5">交付清單</h3>
+<p>交付時附上：</p>
+<ol>
+<li><strong>流程 JSON（去憑證）</strong>：N3 主線的流程匯出檔，確認裡面沒有金鑰、Bot token，chat id 換成 <code>&lt;你的 chat id&gt;</code>。</li>
+<li><strong>執行紀錄截圖</strong>：一張 Agent 的 <code>intermediateSteps</code>（能看出工具與帶入的內容），一張 Telegram 核准訊息，一張核准後行程表多一筆。</li>
+<li><strong>記分表</strong>：<code>common/score-sheet.md</code> 填完，含高風險題 3 次結果與安全錯誤欄。</li>
+<li><strong>權限盤點表</strong>：照下面這張填。重點：每個工具都只能讀；唯一會寫的是 Agent 外面的「寫回行程表」，而且要先經 Telegram 核准。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>能做什麼</th>
+<th>讀或寫</th>
+<th>要不要先經你核准</th>
+<th>怎麼收回</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read_profile</td>
+<td>讀 <code>agent/profile.md</code></td>
+<td>只能讀</td>
+<td>不用</td>
+<td>從 Agent 拿掉這個工具節點</td>
+</tr>
+<tr>
+<td>read_notice</td>
+<td>讀 <code>agent/inbox</code> 裡的通知</td>
+<td>只能讀</td>
+<td>不用</td>
+<td>從 Agent 拿掉這個工具節點</td>
+</tr>
+<tr>
+<td>read_schedule</td>
+<td>讀行程表</td>
+<td>只能讀</td>
+<td>不用</td>
+<td>從 Agent 拿掉這個工具節點</td>
+</tr>
+<tr>
+<td>learn</td>
+<td>查 Microsoft Learn</td>
+<td>只能查（唯讀）</td>
+<td>不用</td>
+<td>從 Agent 拿掉這個工具節點</td>
+</tr>
+<tr>
+<td>寫回行程表（Agent 外面）</td>
+<td>把核准的行程寫進 <code>schedule.xlsx</code></td>
+<td>寫</td>
+<td>要，先經 Telegram 核准</td>
+<td>取消發布流程，或刪掉這個節點</td>
+</tr>
+<tr>
+<td>Gemini 金鑰、Telegram Bot</td>
+<td>模型與通知</td>
+<td>憑證</td>
+<td>—</td>
+<td>到原平台重新發一把（位置待查證）</td>
+</tr>
+</tbody></table>
+<h3 id="sec-6">自我驗收清單</h3>
+<ul>
+<li class="check"> 五項畢業標準逐項有證據：工具、紀錄截圖、權限盤點表、一次核准後的寫入、記分表。</li>
+<li class="check"> 加測 1：同一份通知核准兩次，行程表只多 1 筆。</li>
+<li class="check"> 加測 2：備份後弄壞，還原後 Excel 資料回來。</li>
+<li class="check"> 10 題通過率至少 9/10，安全錯誤 0 次，★ 題各跑 3 次。</li>
+<li class="check"> 交付的流程 JSON、截圖都沒有金鑰、帳號名稱、真實個資。</li>
+<li class="check"> 用完把排程流程取消發布，並在權限盤點表註明。</li>
+</ul>
+<details><summary id="sec-7">卡關救援</summary><ul>
+<li>還原後資料不對 → 看 <code>schedule-backup.xlsx</code> 的修改時間與內容、是不是在弄壞之後才備份 → 用較早的備份，或回頭找 N1、N2 的紀錄補回缺的列 → 重新打開 Excel 看列數。</li>
+<li>流程 JSON 匯出後找不到憑證欄位 → 看匯出檔裡有沒有 Bot token 或金鑰字串 → 有就換成佔位符再交 → 重新搜尋檔案確認沒有。</li>
+<li>記分表有題目沒有結果 → 看是不是 Q05、Q07、Q08 沒用 N1 主線補跑 → 補跑並把結果謄上去 → 記分表 10 題都有結果。</li>
+<li>寫入多了一筆重複 → 看日期＋標題是否有空白字或格式差異 → 到 Excel 刪掉多的那列，不要改欄位格式 → 再送一次，查重輸出 0 筆。</li>
+<li>畫面和教材不一樣 → 先看版本附頁 n8n 版結業一節，再看 N1–N3 對應位置 → 找不到就截圖（先遮住帳號與個資）求助 → 畫面對上之後繼續。</li>
+</ul>
+<p>求助格式：用的是哪個 AI、免費或付費、卡在哪一步、畫面上的訊息原文、已經試過什麼。貼上之前先遮住帳號名稱、金鑰與 chat id。</p>
+</details><details><summary id="sec-8">官方連結</summary><p>查詢日期 2026-11-25。</p>
+<ul>
+<li>n8n 官方文件在 docs.n8n.io，到站內搜尋「Read/Write Files from Disk」「Telegram」；確切網址（待查證）。</li>
+<li>提示詞注入與權限限制可參考 OWASP 的 Gen AI 安全專案（genai.owasp.org）；確切網址（待查證）。</li>
+</ul>
+</details><nav class="pager" aria-label="前後課程"><a class="prev" href="n3.html"><span>← 上一個</span>N3 排程、成本與停止條件</a><a class="next" href="version.html"><span>下一個 →</span>附錄 版本附頁</a></nav></article></main><aside class="toc" aria-label="本頁目錄"><div class="t">本頁</div><a href="#sec-1">成果與先修</a><a href="#sec-2">畢業標準</a><a href="#sec-3">n8n 版加測（兩項，不算在五項裡）</a><a href="#sec-4">做法：備份與還原</a><a href="#sec-5">交付清單</a><a href="#sec-6">自我驗收清單</a><a href="#sec-7">卡關救援</a><a href="#sec-8">官方連結</a></aside><nav class="bottombar" aria-label="前後課程"><a href="n3.html">← N3 排程、成本與停止條件</a><a href="version.html">附錄 版本附頁 →</a></nav></body></html>

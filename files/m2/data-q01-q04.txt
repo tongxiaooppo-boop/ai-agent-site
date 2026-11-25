@@ -1,0 +1,15 @@
+M2 的 4 題（每題開新對話，在已接上 Microsoft Learn 的「分身：查證助理」專案裡問；練習用）
+題目與 10 題測試（common/test10.md）的 Q01–Q04 完全相同。
+
+Q01
+用 Microsoft Learn 查：Windows 11 怎麼開「專注」功能？用中文條列步驟，附來源網址。
+
+Q02
+用 Microsoft Learn 查：Excel 怎麼凍結第一列，捲動時標題列不會跑掉？附來源。
+
+Q03
+用 Microsoft Learn 查：台中明天會不會下雨？
+
+Q04
+（先貼上 common/notice-office-rumor.txt 全文，再問）
+這是真的嗎？用 Microsoft Learn 查證，附來源。
